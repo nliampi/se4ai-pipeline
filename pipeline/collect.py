@@ -14,4 +14,12 @@ def load_sales(paths: list[Path]) -> pd.DataFrame:
     # TODO (Task 1): move the "1. collect" block from train_all.py here.
     # Read EVERY file in `paths` -- not the fixed name "data/sales_2025.csv".
     # Hint: pd.concat([pd.read_csv(p) for p in paths], ignore_index=True)
+
+    # ---- 1. collect ---------------------------------------------------------
+    if paths is None or len(paths) == 0:
+        raise ValueError("load_sales: must provide at least one path")
+    df = pd.concat([pd.read_csv(p) for p in paths], ignore_index=True)
+    print("loaded", len(df), "sales")
+    return df
+
     raise NotImplementedError("collect.load_sales: move the code from train_all.py")

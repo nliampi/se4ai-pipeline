@@ -13,4 +13,19 @@ def encode(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     """
     # TODO (Task 1): move the "3. features" block from train_all.py here.
     # Leave the dead USE_LOG_PRICE experiment behind -- nobody uses it.
+    # ---- 3. features --------------------------------------------------------
+    if "year_built" not in df.columns:
+        raise ValueError("encode: missing year_built column")
+    df["age"] = df["sold_date"].dt.year - df["year_built"]
+
+    required_columns = {"sqft", "bedrooms", "age", "region"}
+    if not required_columns.issubset(df.columns):
+        raise ValueError("encode: missing one of sqft, bedrooms, age, region columns")
+    X = pd.get_dummies(df[["sqft", "bedrooms", "age", "region"]], columns=["region"], dtype=int)
+    
+    if "price" not in df.columns:
+        raise ValueError("encode: missing price column")
+    y = df["price"]
+    return X, y
+
     raise NotImplementedError("features.encode: move the code from train_all.py")
